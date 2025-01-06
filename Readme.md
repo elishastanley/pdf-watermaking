@@ -66,7 +66,7 @@ pdf_watermarker/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/elisha/pdf_watermarker.git
+   git clone https://github.com/elishastanley/pdf-watermaking.git
    cd pdf_watermarker
    ```
 
