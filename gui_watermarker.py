@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinter import ttk
+from ttkbootstrap import Style
 import subprocess
 import threading
 import json
@@ -12,12 +13,11 @@ class WatermarkGUI:
     def __init__(self, master):
         self.master = master
         master.title("PDF Watermarking Tool")
-        master.geometry("900x700")  # Increased window size for better layout
+        master.geometry("900x900") 
         master.resizable(False, False)
 
         # Configure styles
-        self.style = ttk.Style()
-        self.style.theme_use('clam')  # 'clam' is more modern; adjust as needed
+        self.style = Style(theme='darkly') 
 
         # Create frames for better organization
         self.input_frame = ttk.LabelFrame(master, text="Input Files")
@@ -83,6 +83,18 @@ class WatermarkGUI:
         self.profile_var = tk.BooleanVar()
         self.profile_check = ttk.Checkbutton(self.settings_frame, text="Enable Profiling", variable=self.profile_var)
         self.profile_check.grid(row=2, column=1, sticky=tk.W, padx=5, pady=10)
+
+        # -------------------------------
+        # Add Start Button
+        # -------------------------------
+        self.start_button = ttk.Button(self.settings_frame, text="Start Watermarking", command=self.start_watermarking)
+        self.start_button.grid(row=3, column=0, columnspan=3, pady=20)
+
+        # Adjust row and column settings if necessary
+        self.settings_frame.rowconfigure(3, weight=1)
+        self.settings_frame.columnconfigure(0, weight=1)
+        self.settings_frame.columnconfigure(1, weight=1)
+        self.settings_frame.columnconfigure(2, weight=1)
 
         # -------------------------------
         # Progress Frame Widgets

@@ -10,10 +10,10 @@ def watermark_pdf(input_pdf, output_pdf, watermark_image, opacity=0.2, workers=4
     Calls the watermark_pdf.py script as a subprocess, measures execution time, and parses timing data.
     """
     try:
-        # Record the start time from the parent script's perspective
+        # Recording the start time from the parent script's perspective
         parent_start_time = time.time()
 
-        # Build the command
+        # Building the command
         cmd = [
             'python', 'watermark_pdf.py',
             input_pdf,
@@ -26,7 +26,7 @@ def watermark_pdf(input_pdf, output_pdf, watermark_image, opacity=0.2, workers=4
         if profile:
             cmd.extend(['--profile', '--profile_output', 'profile_output.prof'])
 
-        # Execute the watermark_pdf.py script as a subprocess
+        # Executing the watermark_pdf.py script as a subprocess
         result = subprocess.run(
             cmd,
             check=True,
@@ -34,10 +34,10 @@ def watermark_pdf(input_pdf, output_pdf, watermark_image, opacity=0.2, workers=4
             text=True
         )
 
-        # Record the end time after subprocess completion
+        # Recording the end time after subprocess completion
         parent_end_time = time.time()
 
-        # Capture the JSON timing data from stdout
+        # Capturing the JSON timing data from stdout
         # Assuming JSON is printed at the end, find the last JSON object
         stdout = result.stdout.strip()
         json_output = None
@@ -59,7 +59,7 @@ def watermark_pdf(input_pdf, output_pdf, watermark_image, opacity=0.2, workers=4
             # Assuming profiling data is saved to a file
             print("\nProfiling data saved to profile_output.prof.")
 
-        # Calculate and print the total execution time from the parent script's perspective
+        # Calculating and print the total execution time from the parent script's perspective
         parent_total_time = parent_end_time - parent_start_time
         print(f"\nTotal execution time from parent script: {parent_total_time:.2f} seconds.")
 

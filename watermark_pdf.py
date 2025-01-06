@@ -12,12 +12,12 @@ import psutil
 import cProfile
 import pstats
 
-# Configure logging to write to both stderr and a log file
+# Configuring logging to write to both stderr and a log file
 def setup_logging(log_file='watermark_log.log'):
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    # Formatter
+    # Formatting
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
     # StreamHandler for stderr
@@ -107,10 +107,10 @@ def adjust_workers(desired_workers, cpu_threshold=80, memory_threshold=80):
     """
     cpu, memory = get_system_resources()
     if cpu > cpu_threshold or memory > memory_threshold:
-        # Reduce the number of workers to prevent system overload
+        # Reducing the number of workers to prevent system overload
         return max(1, desired_workers - 1)
     else:
-        # Increase the number of workers if resources are available
+        # Increasing the number of workers if resources are available
         return desired_workers + 1
 
 def watermark_pdf(input_pdf_path, output_pdf_path, watermark_image_path, opacity=0.2, max_workers=4, cpu_threshold=80, memory_threshold=80):
@@ -131,7 +131,7 @@ def watermark_pdf(input_pdf_path, output_pdf_path, watermark_image_path, opacity
     start_time = time.time()
     timing_data = {}
     try:
-        # Prepare the watermark image
+        # Preparing the watermark image
         processed_watermark = prepare_watermark(watermark_image_path, opacity)
         watermark_preparation_time = time.time()
         preparation_duration = watermark_preparation_time - start_time
@@ -142,9 +142,9 @@ def watermark_pdf(input_pdf_path, output_pdf_path, watermark_image_path, opacity
             total_pages = pdf.page_count
             logging.info(f"PDF opened. Total pages: {total_pages}")
 
-            # Initialize ThreadPoolExecutor for parallel processing
+            # Initializing ThreadPoolExecutor for parallel processing
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
-                # Submit watermarking tasks for each page
+                # Submitting watermarking tasks for each page
                 future_to_page = {
                     executor.submit(watermark_page_under, page, processed_watermark): page.number
                     for page in pdf
@@ -159,7 +159,7 @@ def watermark_pdf(input_pdf_path, output_pdf_path, watermark_image_path, opacity
                         watermarked_pages += 1
                         logging.info(f"Watermarked page {page_number + 1}/{total_pages}")
                         
-                        # Periodically check system resources and adjust workers
+                        # Periodically checking system resources and adjust workers
                         if watermarked_pages % 50 == 0:  # Adjust every 50 pages
                             current_workers = executor._max_workers
                             adjusted_workers = adjust_workers(current_workers, cpu_threshold, memory_threshold)
@@ -173,11 +173,11 @@ def watermark_pdf(input_pdf_path, output_pdf_path, watermark_image_path, opacity
                 watermarking_duration = watermarking_end_time - watermarking_start_time
                 timing_data['watermarking'] = watermarking_duration
 
-            # Save the watermarked PDF
+            # Saving the watermarked PDF
             pdf.save(output_pdf_path)
             logging.info(f"Watermarked PDF saved as {output_pdf_path}")
 
-        # Calculate and log saving duration
+        # Calculating and log saving duration
         watermark_post_process_time = time.time()
         saving_duration = watermark_post_process_time - watermark_preparation_time
         logging.info(f"Watermarking and saving took {saving_duration:.2f} seconds.")
@@ -191,7 +191,7 @@ def watermark_pdf(input_pdf_path, output_pdf_path, watermark_image_path, opacity
         # Output timing data as JSON to stdout
         print(json.dumps(timing_data))
 
-        # Clean up the temporary watermark image
+        # Cleaning up the temporary watermark image
         if os.path.exists(processed_watermark):
             os.remove(processed_watermark)
             logging.debug(f"Temporary watermark image {processed_watermark} deleted.")
